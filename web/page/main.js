@@ -23,6 +23,17 @@ function ToggleLEDPause()
 	KickLEDs();
 }
 
+//$('#LEDCanvas').mousemove(function(e) {
+$('#LEDCanvas').on('click', null, function(e) {
+    var pos = findPos(this);
+    var x = e.pageX - pos.x;
+    var y = e.pageY - pos.y;
+    var coord = "x=" + x + ", y=" + y;
+    var c = this.getContext('2d');
+    var p = c.getImageData(x, y, 1, 1).data;
+    var hex = "#" + ("000000" + rgbToHex(p[0], p[1], p[2])).slice(-6);
+    $('#status').html(coord + "<br>" + hex);
+});
 
 function GotLED(req,data)
 {
@@ -57,7 +68,7 @@ function GotLED(req,data)
 	var samp = parseInt( data.substr(i*2,2),16 );
 
 	LEDDataTicker();
-} 
+}
 
 function LEDDataTicker()
 {
@@ -73,7 +84,3 @@ function LEDDataTicker()
 	$( "#LEDPauseButton" ).css( "background-color", (is_leds_running&&!pause_led)?"green":"red" );
 
 }
-
-
-
-
